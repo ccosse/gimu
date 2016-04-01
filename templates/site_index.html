@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% comment %}
+This is where you can override the hero area block. You can simply modify the content below or replace it wholesale to meet your own needs. 
+{% endcomment %}
+{% block middle %}
+    <div id="mapwrap"></div>
+    
+	<div class="row-fluid">
+	  <div class="span12">
+	    <div id="map_div" class="map_div"></div>
+	    <div id="popup" class="ol-popup">
+	      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+	      <div id="popup-content"></div>
+	    </div>
+	  </div>
+	</div>
+
+{% endblock%}

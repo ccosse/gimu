@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block extra_head %}
+
+<link href="{{ STATIC_URL }}css/site_base.css" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/gimu/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/gimu/css/bootstrap-switch.css">
+<link rel="stylesheet" href="/static/gimu/css/ol.css" >
+<link rel="stylesheet" href="/static/gimu/css/ol.css"/>
+<link rel="stylesheet" href="/static/gimu/css/gimu.css"/>
+
+<script src="/static/gimu/js/jquery-1.11.2.min.js"></script>
+<script src="/static/gimu/js/bootstrap.min.js"></script>
+<script src="/static/gimu/js/bootstrap-switch.js"></script>
+<script src="/static/gimu/js/ol.js" type="text/javascript"></script>
+
+<script src="/static/gimu/js/gimu.js" type="text/javascript"></script>
+
+<script type ="text/javascript">
+
+var initialize=function(e){
+	window.gimu=new GIMU();
+	console.log("GIMU Object Created");
+}
+
+
+</script>
+
+{% endblock %}
