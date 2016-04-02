@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "gimu_base.html" %}
 {% block extra_head %}
 
 <link href="{{ STATIC_URL }}css/site_base.css" rel="stylesheet"/>
@@ -30,8 +30,19 @@ var init=function(e){
 	window.gimu=new GIMU();
 	console.log("GIMU Object Created");
 	get_box_info("navbar");
-	get_box_info("mapwrap");
-	
+	get_box_info("map_div");
+	var bcr_navbar=document.getElementById("navbar").getBoundingClientRect();
+	var map_div=document.getElementById("map_div");
+	var bcr_map_div=map_div.getBoundingClientRect();
+	map_div.style.position="absolute";
+	//map_div.style.top="0px";
+	map_div.style.top=parseInt(bcr_navbar.height)+"px";
+	map_div.style.left="0px";
+	get_box_info("map_div");
+
+	var footer=document.getElementById("gimu_footer");
+	footer.style.position="absolute";
+	footer.style.top=parseInt(bcr_navbar.height + bcr_map_div.height)+"px";
 }
 
 
