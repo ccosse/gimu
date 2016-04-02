@@ -7,6 +7,8 @@ var GIMU=function(map_div_id){
 	BASE_LAYERS['OpenStreetMap2']=new ol.layer.Tile({title:'OpenStreetMap2',source:new ol.source.OSM()});
 
 	me.gy_center=[-58.9,4.9];
+	me.get_center=function(){return me.gy_center;}
+	
 	me.gy_bbox=[-61.5,1.1,-56.3,8.7];
 	me.get_bbox=function(){return me.gy_bbox;}
 	
@@ -23,6 +25,7 @@ var GIMU=function(map_div_id){
 				collapsible: false
 			})
 		}).extend([
+			new controlB(),
 		])
 	});
 
