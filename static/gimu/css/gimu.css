@@ -1,11 +1,10 @@
 .map_div{
-	width:100%;
-	height:100%;
-	overflow:auto;
-	position:relative;
-	margin:0;
-	background:#333333;
+        width:100%;
+        overflow:auto;
+        position:absolute;
+        margin:0;
+        background:#333333;
 }
 #wrap{
-	padding-bottom:0;
+        padding-bottom:0;
 }
