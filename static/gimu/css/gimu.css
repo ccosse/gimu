@@ -1,10 +1,15 @@
 .map_div{
-        width:100%;
-        overflow:auto;
-        position:absolute;
-        margin:0;
-        background:#333333;
+	position:absolute;
+	left:0px;
+	width:100%;
+	overflow:auto;
+	position:absolute;
+	margin:0;
+	background:#333333;
 }
 #wrap{
-        padding-bottom:0;
+	padding-bottom:0;
+}
+#gimu_footer{
+	position:absolute;
 }

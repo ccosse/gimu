@@ -1,4 +1,4 @@
-var GIMU=function(){
+var GIMU=function(map_div_id){
 	me={};
 
 	var BASE_LAYERS={};
@@ -6,13 +6,15 @@ var GIMU=function(){
 	BASE_LAYERS['OpenStreetMap']=new ol.layer.Tile({preload:14,opacity:1.0,title:'OpenStreetMap',source:new ol.source.MapQuest({layer:'osm'})});
 	BASE_LAYERS['OpenStreetMap2']=new ol.layer.Tile({title:'OpenStreetMap2',source:new ol.source.OSM()});
 
-	var gy_center=[-58.9,5.1];
-
+	me.gy_center=[-58.9,4.9];
+	me.gy_bbox=[-61.5,1.1,-56.3,8.7];
+	me.get_bbox=function(){return me.gy_bbox;}
+	
 	window.map = new ol.Map({
 		layers: [BASE_LAYERS['OpenStreetMap2']],
-		target: "map_div",
+		target: map_div_id,
 		view: new ol.View({
-			center:ol.proj.transform(gy_center, 'EPSG:4326', 'EPSG:3857'),
+			center:ol.proj.transform(me.gy_center, 'EPSG:4326', 'EPSG:3857'),
 			zoom: 7
 		}),
 //		interactions:[],
