@@ -2,6 +2,14 @@
 	width:100%;height:100%;
 	background:#AAAAAA;
 }
+.hr{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.right-twofifty{
+	width:250px;
+	text-align:right;
+}
 .controlB{
 	top: 85px;
 	right: 10px;

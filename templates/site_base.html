@@ -1,6 +1,8 @@
 {% extends "gimu_base.html" %}
 {% block extra_head %}
 
+<link rel="stylesheet" href="/static/gimu/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/gimu/css/bootstrap-switch.css">
 <link href="{{ STATIC_URL }}css/site_base.css" rel="stylesheet"/>
 <link rel="stylesheet" href="/static/gimu/css/bootstrap.min.css">
 <link rel="stylesheet" href="/static/gimu/css/bootstrap-switch.css">
@@ -21,6 +23,21 @@
 <script type ="text/javascript">
 
 window.gimu=null;
+var MAP_LAYERS={};
+var MAP_LAYER_NAMES=[];
+
+var new_xhr=function(){
+	var xhr=null;
+	try{xhr=new ActiveXObject('Msxml2.XMLHTTP');}
+	catch(e){
+		try{xhr=new ActiveXObject('Microsoft.XMLHTTP');}
+		catch(e2){
+			try{xhr=new XMLHttpRequest();}
+			catch(e3){xhr=null;}
+		}
+	}
+	return xhr;
+}
 
 var get_box_info=function(idn){
 	try{
@@ -66,6 +83,16 @@ window.onresize=window.onorientationchange=function(e){
 	window.map.getView().setResolution(res);
 //	window.map.render();
 }
+var decode=function(str){
+	var div = document.createElement('div');
+	div.innerHTML = str;
+	var decoded=str;
+	try{
+		decoded = div.firstChild.nodeValue;
+	}
+	catch(e){;}
+	return decoded;
+}
 var init=function(e){
 	if(document.location.pathname=="/"){
 		
@@ -77,6 +104,28 @@ var init=function(e){
 		window.control_panel=new ControlPanel();
 
 		window.onresize();
+		
+		xhr=new_xhr();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					try{
+						console.log(xhr.responseText);
+						var pyld=JSON.parse(decode(xhr.responseText));
+						for(var idx=0;idx<pyld['categories'].length;idx++){
+							MAP_LAYER_NAMES.push(pyld['categories'][idx]);
+						}
+			
+					}catch(e){
+						console.log(e);
+					}
+				}
+			}
+		}	
+		xhr.open('Get',"/frontpage?get_layers",true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("");
+	
 	}
 }
 

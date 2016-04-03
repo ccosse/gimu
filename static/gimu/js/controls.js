@@ -9,8 +9,6 @@ var layers={
 
 var ControlPanel=function(){
 		
-//	$("#map_div").click(function(){$("#control_panel").toggleClass("show")});
-
 	//takes no div id, just assumes existence of #control_panel
 	var me={};
 
@@ -21,7 +19,12 @@ var ControlPanel=function(){
 	var close_div=document.createElement("div");
 	close_div.className="close_div";
 	close_div.appendChild(closeB);
-//	$("#control_panel").append(close_div);
+	
+	var span_div=document.createElement("div");
+	span_div.className="right-twofifty";
+	span_div.appendChild(close_div);
+	
+	$("#control_panel").append(span_div);
 
 	
 	
@@ -61,6 +64,7 @@ var ControlPanel=function(){
 	for(var kidx=0;kidx<layers.keys.length;kidx++){
 		
 		var hr=document.createElement("hr");
+		hr.className="hr";
 		$("#control_panel").append(hr);
 		
 		var category=layers.keys[kidx];
@@ -73,7 +77,9 @@ var ControlPanel=function(){
 		t.style.width="100%";
 		var tr=t.insertRow(-1);
 		var td;
-		
+
+		td=tr.insertCell(-1);
+		td.className="arrow_cell";
 		td=tr.insertCell(-1);
 		td.className="arrow_cell";
 		
@@ -91,6 +97,9 @@ var ControlPanel=function(){
 		arrow.className="arrow";
 		arrow.src="./static/gimu/img/arrow.png";
 		td.appendChild(arrow);
+		
+		td=tr.insertCell(-1);
+		td.className="arrow_cell";
 		
 		h.appendChild(t);
 		
@@ -113,17 +122,31 @@ var ControlPanel=function(){
 			//cat_lyrs_div.appendChild(layer_label);
 			var r=lyrs_table.insertRow(-1);
 			r.className="lyr_row";
+			
+			td=r.insertCell(-1);
+			td.className="arrow_cell";
+			td=r.insertCell(-1);
+			td.className="arrow_cell";
+
 			var c=r.insertCell(-1);
 			c.className="lyr_cell";
 			c.appendChild(layer_label);
+		
+			td=r.insertCell(-1);
+			td.className="arrow_cell";
+		
+			td=r.insertCell(-1);
+			td.className="arrow_cell";
+		
 		}
 		cat_lyrs_div.appendChild(lyrs_table);
 		$("#control_panel").append(cat_lyrs_div);
 		
 	}
 	
-	var d=document.createElement("hr");
-	$("#control_panel").append(d);
+	var hr=document.createElement("hr");
+	hr.className="hr";
+	$("#control_panel").append(hr);
 	
 	for(var dummy=0;dummy<$(".arrow").length;dummy++){
 		$($(".arrow")[dummy]).click(function(e){
