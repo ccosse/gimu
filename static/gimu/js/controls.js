@@ -1,3 +1,4 @@
+/*
 var layers={
 	'keys':['Base Layers','National Data','Lands and Surveys','Environmental','Protected Areas'],
 	'Base Layers':['Satellite','OpenStreetMap','OpenStreetMap2'],
@@ -6,7 +7,7 @@ var layers={
 	'Environmental':['Forest Increas','2016 Watershed',],
 	'Protected Areas':['Kaieteur','Shell Beach','Kanuku Mountains','Konashens','Iwokrama'],
 };
-
+*/
 var ControlPanel=function(){
 		
 	//takes no div id, just assumes existence of #control_panel

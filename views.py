@@ -60,7 +60,7 @@ def frontpage(request):
 		logging.exception("oops")
 	
 	return render_to_response(
-		'site_index.html',
+		'gimu_index.html',
 		{'title':'GIM GeoNode',},
 		context_instance=RequestContext(request)
 	)

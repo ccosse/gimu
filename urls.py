@@ -5,5 +5,5 @@ from geonode.urls import *
 
 urlpatterns = patterns('',
    url(r'^frontpage','data.views.frontpage',name='frontpage'),
-   url(r'^/?$',TemplateView.as_view(template_name='site_index.html'),name='home'),
+   url(r'^/?$',TemplateView.as_view(template_name='gimu_site_index.html'),name='home'),
  ) + urlpatterns

@@ -1,0 +1,132 @@
+{% extends "gimu_base.html" %}
+{% block extra_head %}
+<link rel="stylesheet" href="/static/gimu/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/gimu/css/bootstrap-switch.css">
+<link rel="stylesheet" href="/static/css/site_base.css" />
+<link rel="stylesheet" href="/static/gimu/css/ol.css" >
+<link rel="stylesheet" href="/static/gimu/css/gimu.css"/>
+<link rel="stylesheet" href="/static/gimu/css/controls.css" type="text/css">
+<script src="/static/gimu/js/jquery-1.11.2.min.js"></script>
+<script src="/static/gimu/js/jquery.js"></script>
+<script src="/static/gimu/js/bootstrap.min.js"></script>
+<script src="/static/gimu/js/bootstrap-switch.js"></script>
+<script src="/static/gimu/js/ol.js" type="text/javascript"></script>
+<script src="/static/gimu/js/util.js" type="text/javascript"></script>
+<script src="/static/gimu/js/gimu.js" type="text/javascript"></script>
+<script src="/static/gimu/js/controls.js" type="text/javascript"></script>
+
+<script type ="text/javascript">
+
+window.gimu=null;
+var MAP_LAYERS={};
+var MAP_LAYER_NAMES=[];
+
+var new_xhr=function(){
+	var xhr=null;
+	try{xhr=new ActiveXObject('Msxml2.XMLHTTP');}
+	catch(e){
+		try{xhr=new ActiveXObject('Microsoft.XMLHTTP');}
+		catch(e2){
+			try{xhr=new XMLHttpRequest();}
+			catch(e3){xhr=null;}
+		}
+	}
+	return xhr;
+}
+
+var get_box_info=function(idn){
+	try{
+		var bcr=document.getElementById(idn).getBoundingClientRect();
+		var msg=idn+": "+bcr.left+", "+bcr.top+", "+bcr.width+", "+bcr.height;
+		console.log(msg);
+		return bcr;
+	}
+	catch(e){
+		console.log(e);
+	}
+}
+window.onresize=window.onorientationchange=function(e){
+	if(document.location.pathname!="/")return;
+	
+	console.log(document.location.pathname);
+	
+	get_box_info("navbar");
+	get_box_info("map_div");
+
+	var navbar=document.getElementById("navbar");
+	var bcr_navbar=navbar.getBoundingClientRect();
+	
+	var map_div=document.getElementById("map_div");
+	var bcr_map_div=map_div.getBoundingClientRect();
+	
+	var footer=document.getElementById("gimu_footer");
+	var bcr_footer=footer.getBoundingClientRect();
+	
+	map_div.style.top=parseInt(bcr_navbar.height)+"px";
+	var new_map_height=parseInt(window.innerHeight-bcr_navbar.height-bcr_footer.height);
+	map_div.style.height=new_map_height+"px";
+	get_box_info("map_div");
+	
+	var control_panel=document.getElementById("control_panel");
+	control_panel.style.top=parseInt(bcr_navbar.height)+"px";
+	control_panel.style.height=new_map_height+"px";
+	
+	footer.style.top=parseInt(bcr_navbar.height + new_map_height)+"px";
+	
+	if(!window.gimu)return;
+	var res=compute_resolution(window.gimu.get_bbox(),false,window.innerWidth,new_map_height);
+	window.map.getView().setResolution(res);
+//	window.map.render();
+}
+var decode=function(str){
+	var div = document.createElement('div');
+	div.innerHTML = str;
+	var decoded=str;
+	try{
+		decoded = div.firstChild.nodeValue;
+	}
+	catch(e){;}
+	return decoded;
+}
+var init=function(e){
+	if(document.location.pathname=="/"){
+		
+		window.onresize();
+				
+		window.gimu=new GIMU("map_div");
+		$('.ol-zoom-in, .ol-zoom-out, .controlB, .playB').tooltip({
+			placement: 'left'
+		});
+		console.log("GIMU Object Created");
+		
+		window.control_panel=new ControlPanel();
+
+		window.onresize();
+		
+		xhr=new_xhr();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					try{
+						//console.log(xhr.responseText);
+						var pyld=JSON.parse(decode(xhr.responseText));
+						window.control_panel.take_pyld(pyld);
+			
+					}catch(e){
+						console.log(e);
+					}
+				}
+			}
+		}	
+		xhr.open('Get',"/frontpage?get_layers",true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send("");
+		
+		
+	}
+}
+
+
+</script>
+
+{% endblock %}
