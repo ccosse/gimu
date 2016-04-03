@@ -99,6 +99,9 @@ var init=function(e){
 		window.onresize();
 				
 		window.gimu=new GIMU("map_div");
+		$('.ol-zoom-in, .ol-zoom-out, .controlB, .playB').tooltip({
+			placement: 'left'
+		});
 		console.log("GIMU Object Created");
 		
 		window.control_panel=new ControlPanel();
@@ -110,11 +113,9 @@ var init=function(e){
 			if(xhr.readyState==4){
 				if(xhr.status==200){
 					try{
-						console.log(xhr.responseText);
+						//console.log(xhr.responseText);
 						var pyld=JSON.parse(decode(xhr.responseText));
-						for(var idx=0;idx<pyld['categories'].length;idx++){
-							MAP_LAYER_NAMES.push(pyld['categories'][idx]);
-						}
+						window.control_panel.take_pyld(pyld);
 			
 					}catch(e){
 						console.log(e);
@@ -125,7 +126,8 @@ var init=function(e){
 		xhr.open('Get',"/frontpage?get_layers",true);
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send("");
-	
+		
+		
 	}
 }
 

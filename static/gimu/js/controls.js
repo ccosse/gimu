@@ -11,63 +11,19 @@ var ControlPanel=function(){
 		
 	//takes no div id, just assumes existence of #control_panel
 	var me={};
-
-	var closeB=new Image();
-	closeB.src="./static/gimu/img/close.png";
-	closeB.id="closeB";		
 	
-	var close_div=document.createElement("div");
-	close_div.className="close_div";
-	close_div.appendChild(closeB);
-	
-	var span_div=document.createElement("div");
-	span_div.className="right-twofifty";
-	span_div.appendChild(close_div);
-	
-	$("#control_panel").append(span_div);
-
-	
-	
-	var category=layers.keys[kidx];
-	
-	var h=document.createElement("div");
-	h.className='layer_category';
-	h.id=parseInt(100000*Math.random());
-	
-	var t=document.createElement("table");
-	t.style.width="100%";
-
-	var tr=t.insertRow(-1);
-	var td;
-	
-	h.appendChild(t);
-	
-	$("#control_panel").append(h);
-//	$(".mode_toggleB").bootstrapSwitch();
-
-	
-	//Callbacks:
-	$("#closeB").click(function(){
-		$(".control_panel").toggleClass("show");
-	});
-
-	$(".close_div").mouseover(function(){
-		$(".close_div").toggleClass("hilighted");
-	});
-	$(".close_div").mouseout(function(){
-		$(".close_div").toggleClass("hilighted");
-	});
-	
-
+	me.take_pyld=function(pyld){
+		console.log("ControlPanel.take_pyld");
+		console.log(pyld);
 
 	//Hard-coded layers (for now):
-	for(var kidx=0;kidx<layers.keys.length;kidx++){
+	for(var kidx=0;kidx<pyld.categories.length;kidx++){
 		
 		var hr=document.createElement("hr");
 		hr.className="hr";
 		$("#control_panel").append(hr);
 		
-		var category=layers.keys[kidx];
+		var category=pyld.categories[kidx];
 		
 		var h=document.createElement("div");
 		h.className='layer_category';
@@ -112,9 +68,9 @@ var ControlPanel=function(){
 		var lyrs_table=document.createElement("table");
 		lyrs_table.className="lyrs_table";
 		
-		for(var lidx=0;lidx<layers[category].length;lidx++){
+		for(var lidx=0;lidx<pyld[category].length;lidx++){
 			var layer_label=document.createElement("div");
-			layer_label.innerHTML=layers[category][lidx];
+			layer_label.innerHTML=pyld[category][lidx]['layer_typename'];
 			layer_label.className="layer_label";
 			var id=parseInt(1E9*Math.random()).toString();
 			layer_label.id=id;
@@ -163,6 +119,49 @@ var ControlPanel=function(){
 			$(e.target).toggleClass("hilighted");
 		});
 	}
+
+	}
+	
+	var closeB=new Image();
+	closeB.src="./static/gimu/img/close.png";
+	closeB.id="closeB";		
+	
+	var close_div=document.createElement("div");
+	close_div.className="close_div";
+	close_div.appendChild(closeB);
+	
+	
+	
+	var h=document.createElement("div");
+	h.className='layer_category';
+	h.id=parseInt(100000*Math.random());
+	
+	var t=document.createElement("table");
+	t.style.width="100%";
+
+	var tr=t.insertRow(-1);
+	var td;
+	
+	h.appendChild(t);
+	
+	$("#control_panel").append(h);
+//	$(".mode_toggleB").bootstrapSwitch();
+
+	
+	//Callbacks:
+	$("#closeB").click(function(){
+		$(".control_panel").toggleClass("show");
+	});
+
+	$(".close_div").mouseover(function(){
+		$(".close_div").toggleClass("hilighted");
+	});
+	$(".close_div").mouseout(function(){
+		$(".close_div").toggleClass("hilighted");
+	});
+	
+
+
 	
 	return me;
 

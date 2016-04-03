@@ -18,12 +18,13 @@
 	width:20px;
 	height:20px;
 }
-.close_div,#closeB{
-	text-align:right;
+.close_div{
 	width:17px;
 	height:17px;
 }
-
+#closeB{
+	height:17px;
+}
 .close_div.hilighted{
 	background:orange;
 }
