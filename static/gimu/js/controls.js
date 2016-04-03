@@ -45,6 +45,7 @@ var ControlPanel=function(){
 		var label=document.createElement("div");
 		label.className="label";
 		label.innerHTML=category;
+		label.draggable=true;
 		td.appendChild(label);
 		
 		td=tr.insertCell(-1);

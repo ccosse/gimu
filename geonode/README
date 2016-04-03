@@ -1,0 +1,5 @@
+geonode/static/geonode/js/upload/upload.js
+geonode/static/geonode/js/upload/cookie.js
+geonode/layers/views.py
+geonode/layers/templates/upload/layer_upload.html
+

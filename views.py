@@ -23,9 +23,11 @@ def frontpage(request):
 				categories=[]
 				rval={}
 				for idx in range(len(x)):
+					category="Unknown";
 					try:category=x[idx].category.description
-					except:category="Unknown";
+					except:pass;
 					logging.debug(category)
+					
 					try:
 						cidx=categories.index(category)
 					except Exception,e:
