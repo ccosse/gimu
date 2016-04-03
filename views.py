@@ -23,7 +23,8 @@ def frontpage(request):
 				categories=[]
 				rval={}
 				for idx in range(len(x)):
-					category=x[idx].category.description
+					try:category=x[idx].category.description
+					except:category="Unknown";
 					logging.debug(category)
 					try:
 						cidx=categories.index(category)
