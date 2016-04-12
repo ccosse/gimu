@@ -1,0 +1,14 @@
+.gearB{
+	top: 85px;
+	right:5px;
+}
+.icon{
+	height:17px;
+}
+.icon_cell{
+	width:25px;
+	text-align:center;
+}
+.ol-control.ol-zoom{
+	right:5px;
+}

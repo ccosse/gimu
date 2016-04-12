@@ -1,5 +1,5 @@
 .map_div{
-	position:absolute;
+	position:fixed;
 	left:0px;
 	width:100%;
 	overflow:auto;
@@ -9,7 +9,9 @@
 }
 #wrap{
 	padding-bottom:0;
+	padding-top:20px;
 }
 #gimu_footer{
 	position:absolute;
+	width:100%;
 }
