@@ -20,21 +20,39 @@ var ControlPanel=function(){
 		$("#control_panel").append(make_hr("hr3"));
 */
 		console.log(pyld);
-		
+		var HOSTNAME="http://data.gim.gov.gy";
+		window.app.CATEGORIES={'keys':[],};
+			
 		for(var kidx=0;kidx<pyld.categories.length;kidx++){
 			
 			var category=pyld.categories[kidx];
-			console.log(category);
-			window.app.CATEGORIES={'keys':[],};
+			console.log("category: "+category);
 			window.app.CATEGORIES['keys'].push(category);
 			window.app.CATEGORIES[category]={'keys':[],};
+			
+			if(category=="National Data"){
+				console.log("GOT NATIONAL DATA");
+				console.log(window.app.CATEGORIES[category]);
+				console.log(window.app.CATEGORIES['National Data']);
+			}
 			for(var lidx=0;lidx<pyld[category].length;lidx++){
+				
 				layer_name=pyld[category][lidx]['layer_name'];
 				window.app.CATEGORIES[category]['keys'].push(layer_name);
+				
 				window.app.CATEGORIES[category][layer_name]={
 					'api':'ol.layer.Vector',
 					'layer_typename':pyld[category][lidx]['layer_typename'],
 					'layer_name':layer_name,
+					'layer':new ol.layer.Tile({
+								title: layer_name,
+								source: new ol.source.TileWMS({
+									url: HOSTNAME+'/geoserver/wms',
+									params: {'LAYERS': layer_name},
+									serverType: 'geoserver',
+									crossOrigin: ''
+								}),
+							}),
 					'source':'WMS',
 					'feature_names':[],//just string names
 					'features':{},
@@ -44,7 +62,7 @@ var ControlPanel=function(){
 					'toggle':false,
 					'type':'Polygon',
 				};
-			
+				console.log(window.app.CATEGORIES[category][layer_name]);
 			}
 			
 			//ADD TO CONTROL PANEL
@@ -74,7 +92,7 @@ var ControlPanel=function(){
 			solid_id=solid_id.replace(" ","ZZZ");//can't be _ b/c splitting on _ already
 
 		cat_layers_div.id=solid_id+"_cat_layers_div";
-		cat_layers_div.className="cat_layers_div";
+		cat_layers_div.className="cat_features_div";
 		
 		var layers_table=document.createElement("table");
 		layers_table.className="layers_table";
@@ -114,7 +132,7 @@ var ControlPanel=function(){
 		cat_features_div.className="cat_features_div";
 		
 		var features_table=document.createElement("table");
-		features_table.className="features_table";
+		features_table.className="layers_table";
 		
 		cat_features_div.appendChild(features_table);
 		rollup.rollup.appendChild(cat_features_div);
@@ -208,6 +226,7 @@ var ControlPanel=function(){
 	me.layer_checkboxCB=function(e){
 		
 		console.log("controls.js: layer_checkboxCB "+e.target.id);
+		console.log(window.app.CATEGORIES["National Data"]);
 		
 		var img=e.target;
 		var button_type=e.target.id.split("_",1)[0];
@@ -215,8 +234,17 @@ var ControlPanel=function(){
 		var layer_name=e.target.id.split("_",2)[1];
 		layer_name=layer_name.replace("ZZZ"," ");
 		console.log("layer_name="+layer_name);
-		var feature_name=e.target.id.split("_",3)[2];
+		
+		var feature_start=e.target.id.split("_",3)[2];
+		var start_idx=e.target.id.indexOf(feature_start);
+		var end_idx=e.target.id.length;
+		console.log(start_idx+", "+end_idx);
+		var feature_name=e.target.id.slice(start_idx,end_idx);
 		console.log("feature_name="+feature_name);
+		
+		for(var cidx=0;cidx<window.app.CATEGORIES['keys'].length;cidx++){
+			console.log(cidx+": "+window.app.CATEGORIES['keys'][cidx]);
+		}
 		
 		if(get_basename(img.src)=="checkbox-0.png"){
 			img.src="/static/gimu/img/checkbox-1.png";
@@ -226,8 +254,10 @@ var ControlPanel=function(){
 				window.app.BASE_LAYERS[layer_name]['toggle']=true;
 			}
 			else{
-				window.map.addLayer(window.app.LAYERS[layer_name]['layer']);
-				window.app.LAYERS[layer_name]['toggle']=true;
+				console.log("adding layer: "+layer_name+"."+feature_name);
+				console.log(window.app.CATEGORIES[layer_name]);
+				window.map.addLayer(window.app.CATEGORIES[layer_name][feature_name]['layer']);
+				window.app.CATEGORIES[layer_name][feature_name]['toggle']=true;
 			}
 		}
 		else{
@@ -238,8 +268,8 @@ var ControlPanel=function(){
 				window.app.BASE_LAYERS[layer_name]['toggle']=false;
 			}
 			else{
-				window.map.removeLayer(window.app.LAYERS[layer_name]['layer']);
-				window.app.LAYERS[layer_name]['toggle']=false;
+				window.map.removeLayer(window.app.CATEGORIES[layer_name][feature_name]['layer']);
+				window.app.CATEGORIES[layer_name][feature_name]['toggle']=false;
 			}
 			
 		}
@@ -247,11 +277,19 @@ var ControlPanel=function(){
 	me.rangeCB=function(e){
 		console.log("rangeCB: "+e.target.id);
 		
-		var split_id=e.target.id.split("_");
-		var layer_name=split_id[0].replace("ZZZ"," ");
-		var attribute_name=split_id[1];
+		var img=e.target;
+		var attribute_name=e.target.id.split("_",1)[0];
+		var layer_name=e.target.id.split("_",2)[1];
+		layer_name=layer_name.replace("ZZZ"," ");
+		console.log("layer_name="+layer_name);
 		
-		console.log(layer_name+" "+attribute_name+" "+e.target.value);
+		var feature_start=e.target.id.split("_",3)[2];
+		var start_idx=e.target.id.indexOf(feature_start);
+		var end_idx=e.target.id.length;
+		console.log(start_idx+", "+end_idx);
+		var feature_name=e.target.id.slice(start_idx,end_idx);
+		console.log("feature_name="+feature_name);
+		
 		
 		range=document.getElementById(e.target.id);
 		if(is_base_by_name(layer_name)){
@@ -263,10 +301,9 @@ var ControlPanel=function(){
 			var dummy=eval(cmd);
 		}
 		else{
-			console.log(window.app.LAYERS[layer_name]['layer'].getKeys());
 			console.log("setting "+attribute_name+" to "+parseFloat(range.value)/100.);
-			window.app.LAYERS[layer_name]['layer'].set(attribute_name,parseFloat(range.value)/100.);
-			cmd="window.app.LAYERS['"+layer_name+"']['layer'].set"+attribute_name+"("+parseFloat(range.value)/100.+")";
+			window.app.CATEGORIES[layer_name][feature_name]['layer'].set(attribute_name,parseFloat(range.value)/100.);
+			cmd="window.app.CATEGORIES['"+layer_name+"']['"+feature_name+"']['layer'].set"+attribute_name+"("+parseFloat(range.value)/100.+")";
 			console.log(cmd);
 			var dummy=eval(cmd);
 		}
@@ -281,11 +318,14 @@ var ControlPanel=function(){
 		var layer_name=e.target.id.split("_",2)[1];
 		layer_name=layer_name.replace("ZZZ"," ");
 		console.log("layer_name="+layer_name);
-		var feature_name=e.target.id.split("_",3)[2];
+		
+		var feature_start=e.target.id.split("_",3)[2];
+		var start_idx=e.target.id.indexOf(feature_start);
+		var end_idx=e.target.id.length;
+		console.log(start_idx+", "+end_idx);
+		var feature_name=e.target.id.slice(start_idx,end_idx);
 		console.log("feature_name="+feature_name);
 
-		console.log(layer_name);
-		
 		$(".popout_panel").css({"top":(e.clientY-100)+"px"});
 		$(".popout_panel").html("");
 		$(".popout_panel").html(layer_name);
@@ -305,7 +345,7 @@ var ControlPanel=function(){
 
 			var w=document.createElement("input");
 			w.type="range";
-			w.id=layer_name+"_"+attribute_names[aidx];
+			w.id=attribute_names[aidx]+"_"+layer_name+"_"+feature_name;
 			w.setAttribute("min",0);
 			w.setAttribute("max",100);
 			console.log("calling is_base_by_name with "+layer_name);
@@ -319,9 +359,9 @@ var ControlPanel=function(){
 				w.setAttribute("value",val);
 			}
 			else{
-				var val=window.app.CATEGORIES[layer_name]['layer'].getOpacity()*100;
+				var val=window.app.CATEGORIES[layer_name][feature_name]['layer'].getOpacity()*100;
 				console.log(val);
-				var cmd="window.app.LAYERS[layer_name]['layer'].get"+attribute_names[aidx]+"()*100";
+				var cmd="window.app.CATEGORIES['"+layer_name+"']['"+feature_name+"']['layer'].get"+attribute_names[aidx]+"()*100";
 				console.log(cmd);
 				val=eval(cmd);
 				console.log(val);
