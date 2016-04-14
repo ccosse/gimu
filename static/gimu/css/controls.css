@@ -156,7 +156,7 @@
 .tt{
 	width:100%;
 }
-.cat_features_div{
+.cat_layers_div{
 	position:relative;
 	overflow:auto;
 	text-align:center;
@@ -165,13 +165,13 @@
 	width:100%;
 	text-align:center;
 }
-.feature_label{
+.layer_label{
 	color:#fff;
 	height:30px;
 	display: table-cell;
 	vertical-align:middle;
 }
-.feature_label.hilighted{
+.layer_label.hilighted{
 	background:#555555;
 }
 .layer_name{
@@ -196,7 +196,7 @@
 	color:orange;
 	font-size:14pt;
 }
-.feature_cell{
+.layer_cell{
 	text-align:center;
 }
 .centered{
