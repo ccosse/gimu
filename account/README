@@ -1,0 +1,19 @@
+/usr/lib/python2.7/dist-packages/django/contrib
+/usr/lib/python2.7/dist-packages/django/contrib/auth/models.py		AbstractUser, UserManager,
+
+/usr/local/lib/python2.7/dist-packages/geonode
+/usr/local/lib/python2.7/dist-packages/geonode/people/models.py		Profile,  
+/usr/local/lib/python2.7/dist-packages/geonode/templates/account/	signup.html (used)
+
+/usr/local/lib/python2.7/dist-packages/account/
+/usr/local/lib/python2.7/dist-packages/account/urls.py				signup
+/usr/local/lib/python2.7/dist-packages/account/views.py				*SignupView, create_user
+/usr/local/lib/python2.7/dist-packages/account/forms.py				*SignupForm (used)
+/usr/local/lib/python2.7/dist-packages/account/decorators.py		login_required
+
+
+
+geonode.people.models.Profile.objects.all()
+x=geonode.people.models.Profile.objects.get(username="dave")
+x.organization='EPA'
+x.save()
