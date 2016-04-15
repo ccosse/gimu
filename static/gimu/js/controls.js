@@ -31,15 +31,21 @@ var ControlPanel=function(){
 			window.app.CATEGORIES['keys'].push(category);
 			window.app.CATEGORIES[category]={'keys':[],};
 			
-			if(category=="National Data"){
-				console.log("GOT NATIONAL DATA");
-				console.log(window.app.CATEGORIES[category]);
-				console.log(window.app.CATEGORIES['National Data']);
-			}
 			for(var lidx=0;lidx<pyld[category].length;lidx++){
 				
 				layer_name=pyld[category][lidx]['layer_name'];
 				window.app.CATEGORIES[category]['keys'].push(layer_name);
+				
+				window.MAP_LAYER_NAMES.push(layer_name);
+				
+				var layer_source=new ol.source.TileWMS({
+									url: HOSTNAME+'/geoserver/wms',
+									params: {'LAYERS': layer_name},
+									serverType: 'geoserver',
+									crossOrigin: ''
+								});
+				
+				window.SOURCES.push(layer_source);
 				
 				window.app.CATEGORIES[category][layer_name]={
 					'api':'ol.layer.Vector',
@@ -47,12 +53,7 @@ var ControlPanel=function(){
 					'layer_name':layer_name,
 					'layer':new ol.layer.Tile({
 								title: layer_name,
-								source: new ol.source.TileWMS({
-									url: HOSTNAME+'/geoserver/wms',
-									params: {'LAYERS': layer_name},
-									serverType: 'geoserver',
-									crossOrigin: ''
-								}),
+								source: layer_source
 							}),
 					'source':'WMS',
 					'feature_names':[],//just string names
@@ -66,7 +67,6 @@ var ControlPanel=function(){
 				console.log(window.app.CATEGORIES[category][layer_name]);
 			}
 			
-			//ADD TO CONTROL PANEL
 			me.category_block(category);
 			$("#control_panel").append(make_hr());
 			
@@ -117,36 +117,30 @@ var ControlPanel=function(){
 			r.className="layer_row";
 			var c=r.insertCell(-1);
 			
-			
-			//HACK HACK HACK!!!
 			if(is_base)
-				var tt_div=me.make_feature_row(is_base,category,layer_names[lidx]);
+				var tt_div=me.make_layer_row(is_base,category,layer_names[lidx]);
 			else
-				var tt_div=me.make_feature_row(is_base,category,layer_names[lidx]);
+				var tt_div=me.make_layer_row(is_base,category,layer_names[lidx]);
 			
 			c.appendChild(tt_div);
 		}
 		
 	}
-	me.make_feature_row=function(is_base,category,layer_name){
+	me.make_layer_row=function(is_base,category,layer_name){
 			
-			console.log("make_feature_row: "+is_base+" "+category+" "+layer_name);
+			console.log("make_layer_row: "+is_base+" "+category+" "+layer_name);
 			
 			var tt_div=document.createElement("div");
-//			tt_div.className="tt_div";
 			
 			var tt=document.createElement("table");
 			tt.className="tt";
 			var ttr=tt.insertRow(-1);
-			//var ttc=ttr.insertCell(-1);
 			
 			var layer_label=document.createElement("div");
 			layer_label.innerHTML=layer_name;
 			layer_label.className="layer_label";
 			var id=layer_name+parseInt(1E9*Math.random()).toString();
 			layer_label.id=id;
-			//console.log(id);
-			//cat_features_div.appendChild(feature_label);
 			var ttc=ttr.insertCell(-1);
 			ttc.className="layer_cell";
 			ttc.appendChild(layer_label);
@@ -168,10 +162,7 @@ var ControlPanel=function(){
 				img.src="/static/gimu/img/checkbox-0.png";
 			
 			ttc.appendChild(img);
-			if(true)
-				img.addEventListener("click",me.layer_checkboxCB,false);
-			//else
-			//	img.addEventListener("click",me.feature_checkboxCB,false);
+			img.addEventListener("click",me.layer_checkboxCB,false);
 			
 			var ttc=ttr.insertCell(-1);
 			ttc.className="icon_cell";
@@ -334,55 +325,6 @@ var ControlPanel=function(){
 		$(".popout_panel").toggleClass("show");
 	};
 	
-/*	
-	me.layer_block=function(layer_name,opts){
-		
-		var rollup=new RollUpDiv(opts);
-		
-		var cat_features_div=document.createElement("div");
-		
-		var solid_id=opts['roll_up_name'];//handles up to 10 spaces!
-		for(var dummy=0;dummy<10;dummy++)
-			solid_id=solid_id.replace(" ","ZZZ");//can't be _ b/c splitting on _ already
-
-		cat_features_div.id=solid_id+"_cat_features_div";
-		cat_features_div.className="cat_features_div";
-		
-		var features_table=document.createElement("table");
-		features_table.className="layers_table";
-		
-		cat_features_div.appendChild(features_table);
-		rollup.rollup.appendChild(cat_features_div);
-		
-		var feature_names=[];
-		
-		var is_base=is_base_by_name(layer_name);
-		if(opts['is_base']==true){
-			console.log("is a base layer");
-			feature_names=layer_name;
-		}
-		else{
-			console.log("not a base layer");
-			feature_names=window.app.LAYERS[layer_name]['feature_names'];
-		}
-		for(var lidx=0;lidx<feature_names.length;lidx++){
-			
-			var r=features_table.insertRow(-1);
-			r.className="feature_row";
-			var c=r.insertCell(-1);
-			
-			
-			//HACK HACK HACK!!!
-			if(opts['is_base'])
-				var tt_div=me.make_feature_row(opts['is_base'],feature_names[lidx],feature_names[lidx]);
-			else
-				var tt_div=me.make_feature_row(opts['is_base'],layer_name,feature_names[lidx]);
-			
-			c.appendChild(tt_div);
-		}
-		
-	}
-*/
 	return me;
 
 }

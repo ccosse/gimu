@@ -43,6 +43,63 @@ var Map=function(div_id){
 		});
 		
 		console.log('map created');
+
+
+		window.map.on('singleclick', function(evt){
+			
+			var pixel = window.map.getEventPixel(evt.originalEvent);
+			var html = '';
+			var viewResolution = /** @type {number} */ (window.map.getView().getResolution());
+			var pixel = window.map.getEventPixel(evt.originalEvent);
+			var hit = window.map.forEachLayerAtPixel(pixel, function(layer) {
+	  		
+				for(var bidx=0;bidx<window.app.BASE_LAYERS['keys'].length;bidx++){
+					if(layer.get("title")==window.app.BASE_LAYERS['keys'][bidx])return false;
+				}
+	
+				var sidx=window.MAP_LAYER_NAMES.indexOf(layer.get("title"));
+	
+				var html_url = window.SOURCES[sidx].getGetFeatureInfoUrl(
+					evt.coordinate, viewResolution, 'EPSG:3857',
+					{'INFO_FORMAT': 'text/html'}
+				);
+				
+				var json_url = window.SOURCES[sidx].getGetFeatureInfoUrl(
+					evt.coordinate, viewResolution, 'EPSG:3857',
+					{'INFO_FORMAT': 'application/json'}
+				);
+	
+				console.log("html_url="+html_url);
+				console.log("json_url="+json_url);
+	
+				xhr=new_xhr();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4){
+						if(xhr.status==200){
+							try{
+								var popup_content = document.getElementById('popup-content');
+								popup_content.innerHTML=xhr.responseText;
+								overlay.setPosition(evt.coordinate);
+							}
+							catch(e){alert(e);}
+						}
+					}
+				}
+				xhr.open('Get',html_url,true);
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhr.send("");
+		
+				return true;
+			});
+			
+			if(!hit){
+		  		try{
+		  			document.getElementById("mapwrap").removeChild(document.getElementById("info"));
+		  		}
+		  		catch(e){console.log(e);}
+			}
+	 
+		});
 		
 		window.map.on('click',function(evt){
 			dummmy=window.map.forEachFeatureAtPixel(evt.pixel,function(target_feature,layer){
@@ -96,5 +153,4 @@ var Map=function(div_id){
 		
 	}//END:me.setup_map
 	return me;
-	
 }

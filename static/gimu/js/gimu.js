@@ -9,7 +9,7 @@ var GIMU=function(){
 	
 	me.gy_bbox=[-61.5,1.1,-56.3,8.7];
 	me.get_bbox=function(){return me.gy_bbox;}
-
+	
 	me.BASE_ENABLED=true;
 	BASE_SOURCES={
 		'Satellite':new ol.source.MapQuest({layer:'sat'}),

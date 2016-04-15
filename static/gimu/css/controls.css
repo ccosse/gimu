@@ -28,10 +28,10 @@
        	z-index: 9999999999;
 
 
-        background-color: #333333;
+        background-color: #20789A;
 
         color: #fff;
-		opacity:0.0;
+		opacity:0.8;
         border-radius: 4px;
 
 		-webkit-transition: opacity .75s ease;
@@ -116,11 +116,11 @@
 	width: 250px;
 	left: -100%;
 	z-index: 10;
-	background-color:#333333;
+	background-color:#20789A;
 	color:white;
 	-webkit-transition: left 0.75s ease;
 	transition: left 0.75s ease;
-	opacity:0.9;
+	opacity:0.8;
 	text-align:center;
 	overflow:auto;
 }
