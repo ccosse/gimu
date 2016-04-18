@@ -1,14 +1,17 @@
 {% extends "gimu_base.html" %}
 {% block extra_head %}
+<link rel="stylesheet" href="/static/gimu/css/normalize.css" type="text/css">
 <link rel="stylesheet" href="/static/gimu/css/bootstrap.min.css">
 <link rel="stylesheet" href="/static/gimu/css/bootstrap-switch.css">
-<link rel="stylesheet" href="/static/css/site_base.css" />
 <link rel="stylesheet" href="/static/gimu/css/ol.css" >
+
+<link rel="stylesheet" href="/static/css/site_base.css" />
+
+<link rel="stylesheet" href="/static/gimu/css/gimu.css"/>
+<link rel="stylesheet" href="/static/gimu/css/map.css"/>
 <link rel="stylesheet" href="/static/gimu/css/roll_up_div.css" type="text/css">
 <link rel="stylesheet" href="/static/gimu/css/controls.css" type="text/css">
-<link rel="stylesheet" href="/static/gimu/css/normalize.css" type="text/css">
-<link rel="stylesheet" href="/static/gimu/css/map.css"/>
-<link rel="stylesheet" href="/static/gimu/css/gimu.css"/>
+
 
 <script src="/static/gimu/js/jquery-1.11.2.min.js"></script>
 <script src="/static/gimu/js/jquery.js"></script>
@@ -32,68 +35,68 @@ window.MAP_LAYER_NAMES=[];
 
 window.onresize=window.onorientationchange=function(e){
 	if(document.location.pathname!="/")return;
-	
+
 	console.log(document.location.pathname);
-	
+
 	var navbar=document.getElementById("navbar");
 	var bcr_navbar=get_box_info("navbar");
-	
+
 	var map_div=document.getElementById("map_div");
 	var bcr_map_div=get_box_info("map_div");
-	
+
 	var footer=document.getElementById("gimu_footer");
 	var bcr_footer=get_box_info("gimu_footer");
-	
+
 	map_div.style.top=parseInt(bcr_navbar.height)+"px";
 	console.log("map_div.top: "+bcr_navbar.height);
 	var new_map_height=parseInt(window.innerHeight-bcr_navbar.height-bcr_footer.height);
 	map_div.style.height=new_map_height+"px";
 	get_box_info("map_div");
-	
+
 	var control_panel=document.getElementById("control_panel");
 	control_panel.style.top=parseInt(bcr_navbar.height)+"px";
 	control_panel.style.height=new_map_height+"px";
-	
+
 	footer.style.top=parseInt(bcr_navbar.height + new_map_height)+"px";
-	
+
 	if(!window.app)return;
 	var res=compute_resolution(window.app.get_bbox(),false,window.innerWidth,new_map_height);
 	window.map.getView().setResolution(res);
-	
+
 }
 var init=function(e){
 	if(document.location.pathname=="/"){
-		
+
 		window.onresize();
-		
+
 		window.app=new GIMU();
 		console.log("GIMU Object Created");
-		
+
 		var map_manager=new Map("map_div");
 		console.log("map_manager created");
-		
+
 		map_manager.setup_map();
 		console.log("map_manager setup");
-		
+
 		window.control_panel=new ControlPanel();
 		console.log("control_panel created");
-		
+
 		window.app.request_data();
-		
+
 		$('.ol-zoom-in, .ol-zoom-out, .gearB').tooltip({
 			placement: 'left'
-		});		
+		});
 
 		var popup_container = document.getElementById('popup');
 		var popup_content = document.getElementById('popup-content');
 		var popup_closer = document.getElementById('popup-closer');
-		
+
 		popup_closer.onclick = function() {
 			overlay.setPosition(undefined);
 			popup_closer.blur();
 			return false;
 		};
-		
+
 		//overlay from: http://openlayers.org/en/v3.9.0/examples/popup.html
 		var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
 		  element: popup_container,
@@ -102,7 +105,7 @@ var init=function(e){
 		    duration: 250
 		  }
 		}));
-		
+
 		window.onresize();
 	}
 }
