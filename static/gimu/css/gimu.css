@@ -46,7 +46,17 @@ body {
 	padding:0;
 }
 
-#gimu_footer{
+#gimu_footer {
 	position:absolute;
 	width:100%;
+
+	padding: 5px;
+}
+
+#gimu_footer .form-inline select{
+	height: 25px;
+}
+
+#gimu_footer .col-md-8 {
+	padding-top: 3px;
 }
