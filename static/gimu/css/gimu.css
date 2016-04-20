@@ -3,9 +3,7 @@ body {
 }
 
 .navbar {
-	height: 55px;
 	margin: 0;
-
 	background-color: #20789A;
 	border: none;
 }
@@ -59,4 +57,7 @@ body {
 
 #gimu_footer .col-md-8 {
 	padding-top: 3px;
+}
+nav.filter h4{
+	background-color: #20789A;
 }
