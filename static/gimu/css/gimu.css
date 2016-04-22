@@ -1,7 +1,12 @@
 body {
 	padding-top: 55px;
 }
-
+#xpopup{
+	width:400px;
+	height:400px;
+	top:0px;
+	left:0px;
+}
 .navbar {
 	margin: 0;
 	background-color: #20789A;

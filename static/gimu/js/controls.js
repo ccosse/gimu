@@ -5,6 +5,9 @@ var ControlPanel=function(){
 	
 	me.take_pyld=function(pyld){
 		
+		window.MAP_LAYERS=[];
+		window.SOURCES=[];
+		
 		$("#control_panel").append(make_hr());
 
 		var opts={'is_base':true,'parent_id':'control_panel','id':"Satellite",'className':'roll_up_div','roll_up_class':'rollup','roll_up_name':"Base Layers",'roll_up_icon_src':"./static/gimu/img/arrow.png",};
@@ -23,7 +26,7 @@ var ControlPanel=function(){
 		console.log(pyld);
 		var HOSTNAME="http://data.gim.gov.gy";
 		window.app.CATEGORIES={'keys':[],};
-			
+		
 		for(var kidx=0;kidx<pyld.categories.length;kidx++){
 			
 			var category=pyld.categories[kidx];
@@ -275,7 +278,7 @@ var ControlPanel=function(){
 		var layer_name=e.target.id.slice(start_idx,end_idx);
 		console.log("layer_name="+layer_name);
 
-		$(".popout_panel").css({"top":(e.clientY-100)+"px"});
+		$(".popout_panel").css({"top":(e.clientY-25)+"px"});
 		$(".popout_panel").html("");
 		$(".popout_panel").html(layer_name);
 		

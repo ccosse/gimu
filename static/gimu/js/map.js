@@ -47,18 +47,28 @@ var Map=function(div_id){
 
 		window.map.on('singleclick', function(evt){
 			
+			console.log("click");
+			
 			var pixel = window.map.getEventPixel(evt.originalEvent);
 			var html = '';
 			var viewResolution = /** @type {number} */ (window.map.getView().getResolution());
 			var pixel = window.map.getEventPixel(evt.originalEvent);
+			
+			//NEED: maintain array of candidate layers
 			var hit = window.map.forEachLayerAtPixel(pixel, function(layer) {
-	  		
+	  			
+				console.log("hit");
+				
 				for(var bidx=0;bidx<window.app.BASE_LAYERS['keys'].length;bidx++){
-					if(layer.get("title")==window.app.BASE_LAYERS['keys'][bidx])return false;
+					if(layer.get("title")==window.app.BASE_LAYERS['keys'][bidx]){
+						console.log("hit base layer: "+layer.get("title"));
+						return false;
+					}
 				}
 	
 				var sidx=window.MAP_LAYER_NAMES.indexOf(layer.get("title"));
-	
+				console.log("sidx="+sidx+"/"+window.MAP_LAYER_NAMES.length+"/"+window.SOURCES.length);
+				
 				var html_url = window.SOURCES[sidx].getGetFeatureInfoUrl(
 					evt.coordinate, viewResolution, 'EPSG:3857',
 					{'INFO_FORMAT': 'text/html'}
@@ -77,8 +87,9 @@ var Map=function(div_id){
 					if(xhr.readyState==4){
 						if(xhr.status==200){
 							try{
-								var popup_content = document.getElementById('popup-content');
-								popup_content.innerHTML=xhr.responseText;
+								console.log(xhr.responseText);
+								var xpopup = document.getElementById('xpopup');
+								xpopup.innerHTML=xhr.responseText;
 								overlay.setPosition(evt.coordinate);
 							}
 							catch(e){alert(e);}
@@ -92,12 +103,7 @@ var Map=function(div_id){
 				return true;
 			});
 			
-			if(!hit){
-		  		try{
-		  			document.getElementById("mapwrap").removeChild(document.getElementById("info"));
-		  		}
-		  		catch(e){console.log(e);}
-			}
+			
 	 
 		});
 		
