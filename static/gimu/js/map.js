@@ -54,13 +54,13 @@ var Map=function(div_id){
 		
 		console.log('setup_map');
 		
-		var gear_opts={"CB":me.controlsCB,"title":"Configuration","innerHTML":'<img src="/static/gimu/img/flaticon/gear.png" class="icon"/>','id':'gearB','className':'gearB map_button'};
+		var gear_opts={"CB":me.controlsCB,"title":"Configuration","innerHTML":'<img src="/static/gimu/img/flaticon/layers.png" class="icon"/>','id':'gearB','className':'gearB map_button'};
 		var gearB=new MapButton(gear_opts);
 		
 		console.log('creating map ...'+window.app.get_center());
 		
 		window.map = new ol.Map({
-			layers:[konashen_layer],
+			layers:[],
 			overlays: [me.overlay],
 			target: me.div_id,
 			view: new ol.View({
