@@ -251,6 +251,9 @@ define(['underscore',
      *  @returns false
      */
     doUploads = function () {
+		
+		console.log("***** doUploads *****");
+		
         if ($.isEmptyObject(layers)) {
             common.logError('Please provide some files');
             return false;
@@ -265,6 +268,7 @@ define(['underscore',
                 category_selected=true;
                 var category_cookie=new Cookie(document,"CategoryCookie");
                 category_cookie.category=cs[idx].value;
+				console.log(category_cookie.category);
                 category_cookie.store();
             }
         }
