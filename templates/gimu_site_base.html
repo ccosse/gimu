@@ -69,35 +69,16 @@ var init=function(e){
 
 		map_manager.setup_map();
 		console.log("map_manager setup");
-
+		
 		window.control_panel=new ControlPanel();
 		console.log("control_panel created");
-
+		
 		window.app.request_data();
-
+		
 		$('.ol-zoom-in, .ol-zoom-out, .gearB').tooltip({
 			placement: 'left'
 		});
-
-		var popup_container = document.getElementById('popup');
-		var xpopup = document.getElementById('xpopup');
-		var popup_closer = document.getElementById('popup-closer');
-
-		popup_closer.onclick = function() {
-			overlay.setPosition(undefined);
-			popup_closer.blur();
-			return false;
-		};
-
-		//overlay from: http://openlayers.org/en/v3.9.0/examples/popup.html
-		var overlay = new ol.Overlay( ({
-		  element: popup_container,
-		  autoPan: true,
-		  autoPanAnimation: {
-		    duration: 250
-		  }
-		}));
-
+		
 		window.onresize();
 	}
 }

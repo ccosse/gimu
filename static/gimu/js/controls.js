@@ -5,7 +5,7 @@ var ControlPanel=function(){
 	
 	me.take_pyld=function(pyld){
 		
-		window.MAP_LAYERS=[];
+		window.MAP_LAYER_NAMES=[];
 		window.SOURCES=[];
 		
 		$("#control_panel").append(make_hr());
