@@ -12,19 +12,19 @@ var Map=function(div_id){
 
 		$(".control_panel").toggleClass("show");
 		console.log("controlCB show off");
-
-
+		
+		
 	};
-
+	
 	me.setup_map=function(){
-
+		
 		console.log('setup_map');
-
-		var gear_opts={"CB":me.controlsCB,"title":"Layers","innerHTML":'<img src="/static/gimu/img/flaticon/layers.png" class="icon"/>','id':'gearB','className':'gearB map_button'};
+		
+		var gear_opts={"CB":me.controlsCB,"title":"Configuration","innerHTML":'<img src="/static/gimu/img/flaticon/gear.png" class="icon"/>','id':'gearB','className':'gearB map_button'};
 		var gearB=new MapButton(gear_opts);
-
+		
 		console.log('creating map ...'+window.app.get_center());
-
+		
 		window.map = new ol.Map({
 			layers:[],
 			target: me.div_id,
@@ -41,47 +41,47 @@ var Map=function(div_id){
 				gearB,
 			])
 		});
-
+		
 		console.log('map created');
 
 
 		window.map.on('singleclick', function(evt){
-
+			
 			console.log("click");
-
+			
 			var pixel = window.map.getEventPixel(evt.originalEvent);
 			var html = '';
 			var viewResolution = /** @type {number} */ (window.map.getView().getResolution());
 			var pixel = window.map.getEventPixel(evt.originalEvent);
-
+			
 			//NEED: maintain array of candidate layers
 			var hit = window.map.forEachLayerAtPixel(pixel, function(layer) {
-
+	  			
 				console.log("hit");
-
+				
 				for(var bidx=0;bidx<window.app.BASE_LAYERS['keys'].length;bidx++){
 					if(layer.get("title")==window.app.BASE_LAYERS['keys'][bidx]){
 						console.log("hit base layer: "+layer.get("title"));
 						return false;
 					}
 				}
-
+	
 				var sidx=window.MAP_LAYER_NAMES.indexOf(layer.get("title"));
 				console.log("sidx="+sidx+"/"+window.MAP_LAYER_NAMES.length+"/"+window.SOURCES.length);
-
+				
 				var html_url = window.SOURCES[sidx].getGetFeatureInfoUrl(
 					evt.coordinate, viewResolution, 'EPSG:3857',
 					{'INFO_FORMAT': 'text/html'}
 				);
-
+				
 				var json_url = window.SOURCES[sidx].getGetFeatureInfoUrl(
 					evt.coordinate, viewResolution, 'EPSG:3857',
 					{'INFO_FORMAT': 'application/json'}
 				);
-
+	
 				console.log("html_url="+html_url);
 				console.log("json_url="+json_url);
-
+	
 				xhr=new_xhr();
 				xhr.onreadystatechange=function(){
 					if(xhr.readyState==4){
@@ -99,14 +99,14 @@ var Map=function(div_id){
 				xhr.open('Get',html_url,true);
 				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xhr.send("");
-
+		
 				return true;
 			});
-
-
-
+			
+			
+	 
 		});
-
+		
 		window.map.on('click',function(evt){
 			dummmy=window.map.forEachFeatureAtPixel(evt.pixel,function(target_feature,layer){
 				var target_name=target_feature.get("NAME");
@@ -117,20 +117,20 @@ var Map=function(div_id){
 			});
 		});
 		console.log('click listener set');
-
+		
 		window.map.on('pointermove',function(evt){
 			if (evt.dragging) {
 				return;
 			}
-
+			
 			for(var hidx=0;hidx<me.HILIGHTS.length;hidx++){
 				me.featureOverlay.removeFeature(me.HILIGHTS[hidx]);
 			}
-
+			
 			dummmy=window.map.forEachFeatureAtPixel(evt.pixel,function(target_feature,layer){
 				var target_name=target_feature.get("NAME");
 				if(!target_name)target_name=target_feature.get("Name");
-
+				
 				if(String.toLowerCase(target_name)==window.app.current){
 					//this skips printing boundary to console.log
 				}
@@ -145,7 +145,7 @@ var Map=function(div_id){
 			});
 		});
 		console.log("pointermove listener set");
-
+		
 		me.featureOverlay = new ol.FeatureOverlay({
 		  map: window.map,
 		  style: new ol.style.Style({
@@ -156,7 +156,7 @@ var Map=function(div_id){
 		  }),
 		});
 		console.log("featureOverlay created");
-
+		
 	}//END:me.setup_map
 	return me;
 }
