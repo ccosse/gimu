@@ -12,3 +12,11 @@
 .ol-control.ol-zoom{
 	right:5px;
 }
+
+.ol-control button {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+.ol-control button:focus, .ol-control button:hover {
+	background-color: rgb(20, 78, 101);
+}
