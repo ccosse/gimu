@@ -138,18 +138,17 @@
     <footer id="gimu_footer" class="footer">
       <div class="container">
         <div class="row">
-          <div class="col-md-8">
-            {% trans "Powered by" %} <a href="http://geonode.org">{% trans "GeoNode" %}</a> <em>{% trans "version" %} {{ VERSION }}</em> |
-            <a href="{% url "developer" %}">{% trans "Developers" %}</a> |
-            <a href="{% url "about" %}">{% trans "About" %}</a>
+          <div class="col-md-10">
+            Geospatial Information Management (GIM), Natural Resources Sector, Government of Guyana |
+            <span class="gimu-contact-us">Contact Us: (592) 223-2235 | (592) 223-2236</span>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <label class="hidden">{% trans "Language" %}</label>
             {% if csrf_token != "NOTPROVIDED" %}
             {% get_current_language as LANGUAGE %}
             <form class="form-inline" action="/i18n/setlang/" method="post">
             {% csrf_token %}
-              <select class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
+              <select class="col-md-12 pull-right" name="language" onchange="javascript:form.submit()">
                 {% for lang in LANGUAGES %}
                 <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %} selected="selected"{% endifequal %}>
                   {{ lang.1 }}
