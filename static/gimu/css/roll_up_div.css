@@ -21,6 +21,8 @@
 	color:#FFFFFF;
 	font-size:14pt;
 	font-weight:bold;
+	font-family: "Times New Roman";
+	text-decoration: underline;
 }
 .rollup_constrained_height{
 	position:relative;
