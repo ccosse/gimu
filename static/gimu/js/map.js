@@ -76,7 +76,7 @@ var Map=function(div_id){
 			])
 		});
 
-		window.map.on('pointermove',function(evt) {
+		window.map.on('click',function(evt) {
 			me.highlightFeature(evt);
 		});
 
